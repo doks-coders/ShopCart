@@ -1,0 +1,67 @@
+﻿@page "/ShoppingCart"
+@inherits ShoppingCartBase
+
+
+
+@if (ShoppingCartItems == null)
+{
+	<LoadingSpinner/>
+}
+else
+{
+	<h3 class="mb-5">Shopping Cart</h3>
+	@if (ShoppingCartItems.Count() > 0)
+	{
+		<div class="row mb-5">
+			<div class="col-md-9">
+				@foreach (var item in ShoppingCartItems)
+				{
+					<div class="row mb-4">
+
+						<div class="col-md-4">
+							<img src="images/image.jpeg" width="300" class="img-thumbnail" />
+						</div>
+						<div class="col-md-8">
+							<h5>@item.Value.ProductName</h5>
+							<div class="mb-4">@item.Value.ProductDescription</div>
+							<span>Price:<b> @item.Value.Price.ToString("c")</b> </span>
+							<!--note that we are using blazors at bind syntax to bind each quantity input field to the corresponding property of the
+
+							appropriate object of type cartItemDTO stored within the shopping cart items collection this means for example that if the qty property for a cart item dto object
+
+							stored within the shopping cart items collection is modified that this modification will immediately be reflected on the ui in the appropriate quantity input field
+
+							-->
+							Amount:
+							<input class="form-control" type="number" @oninput="()=>UpdateQty_Input(item.Value.Id)" @bind="@item.Value.Qty"></input>
+							<button data-itemid="@item.Value.Id" class="btn btn-primary update-qty" @onclick="()=>UpdateQtyCartItem_Click(item.Value.Id,item.Value.Qty)">Update Qty</button>
+
+							<button class="btn btn-danger" @onclick="()=>DeleteFromCart_Click(item.Value.Id)"><i class="fa fa-trash"></i></button>
+						</div>
+					</div>
+				}
+			</div>
+
+			<div class="col-md-3">
+				<h5>Cart Summary</h5>
+				<div class="mt-2">
+					<div>Total - @TotalQuantity items <b>@TotalPrice.ToString("c")</b> </div>
+					<a href="#" class="btn btn-success">
+						<span class="oi oi-credit-card"></span> &nbsp; Proceed To Checkout
+					</a>
+				</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		<h4>Cart is Empty</h4>
+	}
+
+}
+
+
+@if (ExceptionMessage != null)
+{
+<DisplayError ExceptionMessage="@ExceptionMessage"></DisplayError>
+}

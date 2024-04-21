@@ -1,0 +1,30 @@
+﻿@page "/"
+@inherits ProductBase
+
+
+@if (Products == null)
+{
+	<LoadingSpinner />
+}
+else
+{
+	<h3 class="mb-5">Products</h3>
+	int productCount = Products.Count();
+	var productsToList = Products.ToList();
+	if (productCount > 0)
+	{
+		var groupProductsByCategory = GetGroupProductsByCategory();
+			<div class="row mt-3">
+			@foreach(var productGroup in groupProductsByCategory)
+			{
+				<h4>@GetCategoryName(productGroup)</h4>
+				<DisplayProduct Products="@productGroup.Take(4)"></DisplayProduct>
+				<hr class="mb-3"/>
+			}
+			
+			</div>
+	}
+}
+
+
+

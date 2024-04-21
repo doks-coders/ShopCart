@@ -1,0 +1,9 @@
+﻿@page "/ProductsByCategory"
+@inherits ProductCategoryBase
+
+<h3>ProductCategory</h3>
+
+@foreach (var product in Products)
+{
+	<p>@product.Name</p>
+}
